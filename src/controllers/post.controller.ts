@@ -2,9 +2,20 @@ import { Response, Request } from 'express'
 import { IPost } from '../types/types'
 import Post from '../models/post'
 
-const getPosts = async (req: Request, res: Response): Promise<void> => {
+const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const posts: IPost[] = await Post.find({ creator: req.userId }).sort({ status: 1, updatedAt: -1, createdAt: -1 })
+    const posts: IPost[] = await Post.find({}).sort({ updatedAt: -1, createdAt: -1 })
+    res.status(200).json({ posts })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error: ' + error
+    })
+  }
+}
+
+const getUserPosts = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const posts: IPost[] = await Post.find({ userId: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
     res.status(200).json({ posts })
   } catch (error) {
     res.status(500).json({
@@ -25,7 +36,7 @@ const addPost = async (req: Request, res: Response): Promise<void> => {
     })
 
     const newPost: IPost = await post.save()
-    const allPosts: IPost[] = await Post.find({ creator: req.userId }).sort({ status: 1, updatedAt: -1, createdAt: -1 })
+    const allPosts: IPost[] = await Post.find({ creator: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
 
     res.status(201).json({
       message: 'Post added',
@@ -54,7 +65,7 @@ const updatePost = async (req: Request, res: Response): Promise<void> => {
       },
       post
     )
-    const allPosts: IPost[] = await Post.find({ creator: req.userId }).sort({ status: 1, updatedAt: -1, createdAt: -1 })
+    const allPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
     res.status(200).json({
       message: 'Post updated',
       post: updatePost,
@@ -71,7 +82,7 @@ const deletePost = async (req: Request, res: Response): Promise<void> => {
   try {
     const deletedPost: IPost | null = await Post.findByIdAndRemove(req.params.postId)
 
-    const allPosts: IPost[] = await Post.find({ creator: req.userId }).sort({ status: 1, updatedAt: -1, createdAt: -1 })
+    const allPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
     res.status(200).json({
       message: 'Post deleted',
       post: deletedPost,
@@ -84,4 +95,4 @@ const deletePost = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export { getPosts, addPost, updatePost, deletePost }
+export { getUsersPosts, getUserPosts, addPost, updatePost, deletePost }
