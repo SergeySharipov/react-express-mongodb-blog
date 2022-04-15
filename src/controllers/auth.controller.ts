@@ -25,7 +25,7 @@ const signup = (req: Request, res: Response) => {
 
 const signin = (req: Request, res: Response) => {
   User.findOne({
-    username: req.body.username
+    email: req.body.email
   })
     .exec((err, user) => {
       if (err) {

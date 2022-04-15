@@ -1,7 +1,11 @@
-import todoRoutes from './todo.routes'
+
+import { Router } from 'express'
+import postRoutes from './post.routes'
 import authRoutes from './auth.routes'
-import userRoutes from './user.routes'
 
-const routes = { todoRoutes, authRoutes, userRoutes }
+const router: Router = Router()
 
-export default routes
+router.use('/api/auth', authRoutes)
+router.use('/api/post', postRoutes)
+
+export default router

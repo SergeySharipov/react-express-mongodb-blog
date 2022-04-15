@@ -6,11 +6,21 @@ export interface IUser extends Document {
   password: string
 }
 
-export interface ITodo extends Document {
-  name: string
-  description: string
-  status: boolean
-  creator: string
+export interface IComment {
+  userId: string
+  content: string
+}
+
+export interface ILike {
+  userId: string
+}
+
+export interface IPost extends Document {
+  id: string
+  userId: string
+  content: string
+  likes: Array<ILike>
+  comments: Array<IComment>
 }
 
 declare global {

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, Router } from 'express'
+
 import { authJwt } from '../middlewares'
-import controller from '../controllers/user.controller'
+import { getPosts, addPost, updatePost, deletePost } from '../controllers/post.controller'
 
 const router: Router = Router()
 
@@ -12,8 +13,12 @@ router.use(function (req: Request, res: Response, next: NextFunction) {
   next()
 })
 
-router.get('/api/test/all', controller.allAccess)
+router.get('/', [authJwt.verifyToken], getPosts)
 
-router.get('/api/test/user/:userId', [authJwt.verifyToken], controller.userBoard)
+router.post('/', [authJwt.verifyToken], addPost)
+
+router.put('/:postId', [authJwt.verifyToken], updatePost)
+
+router.delete('/:postId', [authJwt.verifyToken], deletePost)
 
 export default router

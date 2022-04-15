@@ -1,30 +1,29 @@
-import { ITodo } from '../types/types'
+import { IPost } from '../types/types'
 import { model, Schema } from 'mongoose'
 
-const todoSchema: Schema = new Schema(
+const postSchema: Schema = new Schema(
   {
-    name: {
+    content: {
       type: String,
       required: true,
       minlength: 1
     },
-    description: {
-      type: String,
-      required: false
-    },
-    status: {
-      type: Boolean,
-      required: true
-    },
-    creator: {
+    userId: {
       type: Schema.Types.ObjectId,
+      required: true,
       ref: 'user'
+    },
+    likes: {
+      type: Array
+    },
+    comments: {
+      type: Array
     }
   },
   { timestamps: true }
 )
 
-todoSchema.set('toJSON', {
+postSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -32,4 +31,4 @@ todoSchema.set('toJSON', {
   }
 })
 
-export default model<ITodo>('todo', todoSchema)
+export default model<IPost>('post', postSchema)

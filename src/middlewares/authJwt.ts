@@ -2,23 +2,27 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../utils/config'
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token: string | string[] | undefined = req.headers['x-access-token']
+const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+  const bearerHeader = req.headers.authorization
+
+  if (!bearerHeader) {
+    return res.status(403).send({ message: 'No token provided!' })
+  }
+
+  const bearer = bearerHeader.split(' ')
+  const bearerToken = bearer[1]
+  const token = bearerToken
 
   if (!token || typeof token !== 'string') {
     return res.status(403).send({ message: 'No token provided!' })
   }
 
   jwt.verify(token, config.AUTH_SECRET, (err, decoded) => {
-    if (err) {
+    if (err || !decoded || typeof decoded === 'string') {
       return res.status(401).send({ message: 'Unauthorized!' })
     }
-    if (decoded != null && typeof decoded !== 'string') {
-      req.userId = decoded.id
-    }
-    if (req.params.userId !== req.userId) {
-      return res.status(401).send({ message: 'Unauthorized!' })
-    }
+
+    req.userId = decoded.id
 
     next()
   })

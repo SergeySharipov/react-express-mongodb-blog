@@ -1,0 +1,3 @@
+GET  http://localhost:3001/api/post
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNTljMzA4OTYwYzlhOTdiNjUyNGNlNiIsImlhdCI6MTY1MDA1MDA5MywiZXhwIjoxNjgxNjA3MDQ1fQ.nw3QoSTS8Agm_sk4pAKM2TyiivmmZy9JfmTRbPL0fIk

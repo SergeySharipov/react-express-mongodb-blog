@@ -5,12 +5,15 @@ const userSchema: Schema = new Schema(
   {
     username: {
       type: String,
+      unique: true,
       required: true,
       minlength: 1
     },
     email: {
       type: String,
-      required: true
+      unique: true,
+      required: true,
+      minlength: 5
     },
     password: {
       type: String,

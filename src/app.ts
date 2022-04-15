@@ -25,9 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(requestLogger)
 
-app.use(routes.authRoutes)
-app.use(routes.userRoutes)
-app.use(routes.todoRoutes)
+app.use(routes)
 
 // The "CatchAll" handler: for any request that doesn't
 // match one above, send back React's index.html file.
