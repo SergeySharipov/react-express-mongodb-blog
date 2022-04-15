@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
 
+import React, { useState } from 'react'
+/*
 type Props = {
   saveTodo: (formData: AddTodoFormData) => void
 }
@@ -51,3 +52,4 @@ const AddTodo: React.FC<Props> = ({ saveTodo }) => {
 }
 
 export default AddTodo
+*/

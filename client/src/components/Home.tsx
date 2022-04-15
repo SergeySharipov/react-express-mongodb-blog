@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import TodoItem from './TodoItem'
-import AddTodo from './AddTodo'
-import UpdateTodoDialog from './UpdateTodoDialog'
-import { getTodos, addTodo, updateTodo, deleteTodo } from '../services/todo.service'
+import PostItem from './PostItem'
+import { getUsersPosts,getUserPosts, addPost, updatePost, deletePost } from '../services/post.service'
+/*
+import AddPost from './AddPost'
+import UpdatePostDialog from './UpdatePostDialog'
+*/
 import { getCurrentUser } from "../services/auth.service";
 import { Link } from 'react-router-dom'
 import { login, register } from "../services/auth.service";
@@ -16,79 +18,79 @@ type Props = RouteComponentProps<RouterProps>;
 
 const Home: React.FC<Props> = ({ history }) => {
   /*
-  const [todos, setTodos] = useState<ITodo[]>([])
-  const [editTodoId, setEditTodoId] = useState("");
+  const [editPostId, setEditPostId] = useState("");
   */
+  const [posts, setPosts] = useState<IPost[]>([])
   const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const user = getCurrentUser()
+    if (user) {
+      setCurrentUserId(user.id)
+    }
+  }, [])
+
+  useEffect(() => {
+    function fetchPosts() {
+      if (currentUserId) {
+        getUsersPosts(currentUserId)
+          .then(({ data: { posts } }: IPost[] | any) => setPosts(posts))
+          .catch((err: Error) => console.log(err))
+      }
+    }
+    if (currentUserId !== null) {
+      fetchPosts()
+    }
+  }, [currentUserId])
   /*
-    useEffect(() => {
-      const user = getCurrentUser()
-      if (user) {
-        setCurrentUserId(user.id)
-      }
-    }, [])
-  
-    useEffect(() => {
-      function fetchTodos() {
+    const handleSavePost
+      = (formData: AddPostFormData): void => {
         if (currentUserId) {
-          getTodos(currentUserId)
-            .then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
-            .catch((err: Error) => console.log(err))
-        }
-      }
-      if (currentUserId !== null) {
-        fetchTodos()
-      }
-    }, [currentUserId])
-  
-    const handleSaveTodo
-      = (formData: AddTodoFormData): void => {
-        if (currentUserId) {
-          addTodo(currentUserId, formData)
+          addPost(currentUserId, formData)
             .then(({ status, data }) => {
               if (status !== 201) {
-                throw new Error('Error! Todo not saved')
+                throw new Error('Error! Post not saved')
               }
-              setTodos(data.todos)
+              setPosts(data.posts)
             })
             .catch((err) => console.log(err))
         }
       }
   
-    const handleUpdateTodo = (todo: ITodo): void => {
+    const handleUpdatePost = (post: IPost): void => {
       cancelEditDialog()
       if (currentUserId) {
-        updateTodo(currentUserId, todo)
+        updatePost(currentUserId, post)
           .then(({ status, data }) => {
             if (status !== 200) {
-              throw new Error('Error! Todo not updated')
+              throw new Error('Error! Post not updated')
             }
-            setTodos(data.todos)
+            setPosts(data.posts)
           })
           .catch((err) => console.log(err))
       }
     }
   
-    const handleDeleteTodo = (id: string): void => {
+    const handleDeletePost = (id: string): void => {
       if (currentUserId) {
-        deleteTodo(currentUserId, id)
+        deletePost(currentUserId, id)
           .then(({ status, data }) => {
             if (status !== 200) {
-              throw new Error('Error! Todo not deleted')
+              throw new Error('Error! Post not deleted')
             }
-            setTodos(data.todos)
+            setPosts(data.posts)
           })
           .catch((err) => console.log(err))
       }
     }
   
     function handleOpenEditDialog(id: string) {
-      setEditTodoId(id);
+      setEditPostId(id);
     }
   
     function cancelEditDialog() {
-      if (editTodoId !== "") {
-        setEditTodoId("")
+      if (editPostId !== "") {
+        setEditPostId("")
       }
     }
     */
@@ -126,25 +128,25 @@ const Home: React.FC<Props> = ({ history }) => {
           </div>
         </div>
       </div>}
-      {currentUserId && <div className='todoApp'>
-        <h1>My Todos</h1>
-        {/* <AddTodo saveTodo={handleSaveTodo} />
-        {todos.map((todo: ITodo) => (
-          <TodoItem
-            key={todo.id}
-            updateTodo={handleUpdateTodo}
-            deleteTodo={handleDeleteTodo}
-            openEditDialog={handleOpenEditDialog}
-            todo={todo}
+      {currentUserId && <div className='postApp'>
+        <h1>My Posts</h1>
+        {/* <AddPost savePost={handleSavePost} /> */}
+        {posts.map((post: IPost) => (
+          <PostItem
+            key={post.id}
+            // updatePost={handleUpdatePost}
+            // deletePost={handleDeletePost}
+            // openEditDialog={handleOpenEditDialog}
+            post={post}
           />
         ))}
-        <UpdateTodoDialog
-          todo={
-            editTodoId !== ""
-              ? todos.find(todo => todo.id === editTodoId)
+        {/* <UpdatePostDialog
+          post={
+            editPostId !== ""
+              ? posts.find(post => post.id === editPostId)
               : undefined
           }
-          updateTodo={handleUpdateTodo}
+          updatePost={handleUpdatePost}
           cancelEditDialog={cancelEditDialog}
         /> */}
       </div>}

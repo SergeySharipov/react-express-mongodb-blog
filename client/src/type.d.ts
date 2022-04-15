@@ -1,25 +1,33 @@
-interface ITodo {
+interface IComment {
+  userId: string
+  content: string
+}
+
+interface ILike {
+  userId: string
+}
+
+interface IPost {
   id: string
-  creator: string
-  name: string
-  description?: string
-  status: boolean
+  userId: string
+  content: string
+  likes?: Array<ILike>
+  comments?: Array<IComment>
   createdAt?: string
   updatedAt?: string
 }
 
-interface AddTodoFormData {
-  name: string
-  description: string
+interface AddPostFormData {
+  content: string
 }
 
-interface TodoProps {
-  todo: ITodo
+interface PostProps {
+  post: IPost
 }
 
 type ApiDataType = {
   message: string
   status: string
-  todos: ITodo[]
-  todo?: ITodo
+  posts: IPost[]
+  post?: IPost
 }

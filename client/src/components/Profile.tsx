@@ -1,6 +1,5 @@
 import React from "react";
 import { getCurrentUser } from "../services/auth.service";
-import { deleteAllTodos } from '../services/todo.service'
 import { RouteComponentProps } from "react-router-dom";
 
 interface RouterProps {
@@ -16,17 +15,17 @@ const Profile: React.FC<Props> = ({ history }) => {
     window.location.reload();
   }
 
-  const handleDeleteTodos = (): void => {
-    if (currentUser.id) {
-      deleteAllTodos(currentUser.id)
-        .then(({ status, data }) => {
-          if (status !== 200) {
-            throw new Error('Error! Todos are not deleted')
-          }
-        })
-        .catch((err) => console.log(err))
-    }
-  }
+  // const handleDeleteTodos = (): void => {
+  //   if (currentUser.id) {
+  //     deleteAllTodos(currentUser.id)
+  //       .then(({ status, data }) => {
+  //         if (status !== 200) {
+  //           throw new Error('Error! Todos are not deleted')
+  //         }
+  //       })
+  //       .catch((err) => console.log(err))
+  //   }
+  // }
 
   return (
     <div className="col-md-12">
@@ -40,9 +39,6 @@ const Profile: React.FC<Props> = ({ history }) => {
         <p>
           <strong>Email:</strong> {currentUser.email}
         </p>
-        <button className="btn btn-danger btn-block" onClick={handleDeleteTodos}>
-          <span>Delete All Todos</span>
-        </button>
       </div>
     </div>
   );

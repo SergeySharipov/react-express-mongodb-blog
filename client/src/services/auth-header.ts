@@ -7,12 +7,12 @@ export default function authHeader() {
     user = JSON.parse(userStr);
 
   if (user && user.accessToken) {
-    return { 'x-access-token': user.accessToken } as CommonHeaderProperties;
+    return { 'Authorization': 'Bearer '+user.accessToken } as CommonHeaderProperties;
   } else {
     return {};
   }
 }
 
 interface CommonHeaderProperties extends HeadersDefaults {
-  'x-access-token': string;
+  'Authorization': string;
 }
