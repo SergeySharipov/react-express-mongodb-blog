@@ -1,5 +1,5 @@
-import { IUser } from "../types/types"
-import { model, Schema } from "mongoose"
+import { IUser } from '../types/types'
+import { model, Schema } from 'mongoose'
 
 const userSchema: Schema = new Schema(
   {
@@ -10,13 +10,13 @@ const userSchema: Schema = new Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: true
     },
     password: {
       type: String,
       required: true,
       minlength: 6
-    },
+    }
   },
   { timestamps: true }
 )
@@ -29,4 +29,4 @@ userSchema.set('toJSON', {
   }
 })
 
-export default model<IUser>("user", userSchema)
+export default model<IUser>('user', userSchema)

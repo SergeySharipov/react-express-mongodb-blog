@@ -11,7 +11,10 @@
   "scripts": {
     "build": "tsc && cd client && npm install && npm run build && cd .. && mv client/build/ dist/build",
     "start": "node dist/index.js",
-    "dev": "concurrently \"tsc -w\" \"gen-env-template && nodemon dist/index.js\" \"cd client && npm start\""
+    "dev": "concurrently \"tsc -w\" \"gen-env-template && wait-on -d 5000 dist/index.js && nodemon dist/index.js\" \"cd client && npm start\"",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -29,8 +32,17 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
     "concurrently": "^7.0.0",
     "gen-env-template": "^2.0.6",
+    "wait-on": "^6.0.1",
+    "husky": "^7.0.4",
     "nodemon": "^2.0.15"
   }
 }

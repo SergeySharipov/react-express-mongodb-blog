@@ -1,11 +1,11 @@
 import log from '../utils/log'
 
-const requestLogger = (request: { method: any; path: any; body: any }, response: any, next: () => void) => {
-  log.i('Method:', request.method)
-  log.i('Path:  ', request.path)
-  log.i('Body:  ', request.body)
+const requestLogger = (req: { method: unknown, path: unknown, body: unknown }, res: unknown, next: () => void) => {
+  log.i('Method:', req.method)
+  log.i('Path:  ', req.path)
+  log.i('Body:  ', req.body)
   log.i('---')
   next()
 }
 
-export default  requestLogger
+export default requestLogger

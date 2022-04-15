@@ -1,5 +1,5 @@
-import { ITodo } from "../types/types"
-import { model, Schema } from "mongoose"
+import { ITodo } from '../types/types'
+import { model, Schema } from 'mongoose'
 
 const todoSchema: Schema = new Schema(
   {
@@ -10,15 +10,15 @@ const todoSchema: Schema = new Schema(
     },
     description: {
       type: String,
-      required: false,
+      required: false
     },
     status: {
       type: Boolean,
-      required: true,
+      required: true
     },
     creator: {
       type: Schema.Types.ObjectId,
-      ref: "user"
+      ref: 'user'
     }
   },
   { timestamps: true }
@@ -32,4 +32,4 @@ todoSchema.set('toJSON', {
   }
 })
 
-export default model<ITodo>("todo", todoSchema)
+export default model<ITodo>('todo', todoSchema)

@@ -1,11 +1,11 @@
-import mongoose from "mongoose"
-import User from "./user"
+import mongoose from 'mongoose'
+import User from './user'
 
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
 const db = {
   mongoose: mongoose,
-  user: User,
-};
+  user: User
+}
 
 export default db

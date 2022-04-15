@@ -1,8 +1,8 @@
-const i = (...params: any[]) => {
+const i = (...params: unknown[]) => {
   console.log(...params)
 }
 
-const e = (...params: any[]) => {
+const e = (...params: unknown[]) => {
   console.error(...params)
 }
 
