@@ -52,7 +52,7 @@ const Register: React.FC<Props> = ({ history }) => {
 
     try {
       await register(username, email, password);
-      await login(username, password);
+      await login(email, password);
 
       history.push("/");
       window.location.reload();

@@ -15,80 +15,83 @@ interface RouterProps {
 type Props = RouteComponentProps<RouterProps>;
 
 const Home: React.FC<Props> = ({ history }) => {
+  /*
   const [todos, setTodos] = useState<ITodo[]>([])
   const [editTodoId, setEditTodoId] = useState("");
+  */
   const [currentUserId, setCurrentUserId] = useState(null);
-
-  useEffect(() => {
-    const user = getCurrentUser()
-    if (user) {
-      setCurrentUserId(user.id)
-    }
-  }, [])
-
-  useEffect(() => {
-    function fetchTodos() {
-      if (currentUserId) {
-        getTodos(currentUserId)
-          .then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
-          .catch((err: Error) => console.log(err))
+  /*
+    useEffect(() => {
+      const user = getCurrentUser()
+      if (user) {
+        setCurrentUserId(user.id)
       }
-    }
-    if (currentUserId !== null) {
-      fetchTodos()
-    }
-  }, [currentUserId])
-
-  const handleSaveTodo
-    = (formData: AddTodoFormData): void => {
+    }, [])
+  
+    useEffect(() => {
+      function fetchTodos() {
+        if (currentUserId) {
+          getTodos(currentUserId)
+            .then(({ data: { todos } }: ITodo[] | any) => setTodos(todos))
+            .catch((err: Error) => console.log(err))
+        }
+      }
+      if (currentUserId !== null) {
+        fetchTodos()
+      }
+    }, [currentUserId])
+  
+    const handleSaveTodo
+      = (formData: AddTodoFormData): void => {
+        if (currentUserId) {
+          addTodo(currentUserId, formData)
+            .then(({ status, data }) => {
+              if (status !== 201) {
+                throw new Error('Error! Todo not saved')
+              }
+              setTodos(data.todos)
+            })
+            .catch((err) => console.log(err))
+        }
+      }
+  
+    const handleUpdateTodo = (todo: ITodo): void => {
+      cancelEditDialog()
       if (currentUserId) {
-        addTodo(currentUserId, formData)
+        updateTodo(currentUserId, todo)
           .then(({ status, data }) => {
-            if (status !== 201) {
-              throw new Error('Error! Todo not saved')
+            if (status !== 200) {
+              throw new Error('Error! Todo not updated')
             }
             setTodos(data.todos)
           })
           .catch((err) => console.log(err))
       }
     }
-
-  const handleUpdateTodo = (todo: ITodo): void => {
-    cancelEditDialog()
-    if (currentUserId) {
-      updateTodo(currentUserId, todo)
-        .then(({ status, data }) => {
-          if (status !== 200) {
-            throw new Error('Error! Todo not updated')
-          }
-          setTodos(data.todos)
-        })
-        .catch((err) => console.log(err))
+  
+    const handleDeleteTodo = (id: string): void => {
+      if (currentUserId) {
+        deleteTodo(currentUserId, id)
+          .then(({ status, data }) => {
+            if (status !== 200) {
+              throw new Error('Error! Todo not deleted')
+            }
+            setTodos(data.todos)
+          })
+          .catch((err) => console.log(err))
+      }
     }
-  }
-
-  const handleDeleteTodo = (id: string): void => {
-    if (currentUserId) {
-      deleteTodo(currentUserId, id)
-        .then(({ status, data }) => {
-          if (status !== 200) {
-            throw new Error('Error! Todo not deleted')
-          }
-          setTodos(data.todos)
-        })
-        .catch((err) => console.log(err))
+  
+    function handleOpenEditDialog(id: string) {
+      setEditTodoId(id);
     }
-  }
-
-  function handleOpenEditDialog(id: string) {
-    setEditTodoId(id);
-  }
-
-  function cancelEditDialog() {
-    if (editTodoId !== "") {
-      setEditTodoId("")
+  
+    function cancelEditDialog() {
+      if (editTodoId !== "") {
+        setEditTodoId("")
+      }
     }
-  }
+    */
 
   const demoLogin = async () => {
     const dateStr = Date.now();
@@ -125,7 +128,7 @@ const Home: React.FC<Props> = ({ history }) => {
       </div>}
       {currentUserId && <div className='todoApp'>
         <h1>My Todos</h1>
-        <AddTodo saveTodo={handleSaveTodo} />
+        {/* <AddTodo saveTodo={handleSaveTodo} />
         {todos.map((todo: ITodo) => (
           <TodoItem
             key={todo.id}
@@ -143,7 +146,7 @@ const Home: React.FC<Props> = ({ history }) => {
           }
           updateTodo={handleUpdateTodo}
           cancelEditDialog={cancelEditDialog}
-        />
+        /> */}
       </div>}
     </div>
   )
