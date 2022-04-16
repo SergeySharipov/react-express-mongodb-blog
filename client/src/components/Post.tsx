@@ -35,11 +35,11 @@ const Post: React.FC<Props> = ({ post, deletePost, likePost, saveComment, curren
         {post.userId === currentUserId &&
           <img src={icTrash} alt='delete' onClick={deletePost} height="25" />}
       </div>
+      {post.comments && post.comments.length > 0 && < Comments
+        comments={post.comments} />}
       <AddComment
         postId={post.id}
         saveComment={saveComment} />
-      {post.comments && post.comments.length > 0 && < Comments
-        comments={post.comments} />}
     </div>
   )
 }
