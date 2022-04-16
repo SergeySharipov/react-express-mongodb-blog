@@ -136,9 +136,8 @@ const Home: React.FC<Props> = ({ history }) => {
         {posts.map((post: IPost) => (
           <PostItem
             key={post.id}
-            // updatePost={handleUpdatePost}
+            isUserOwner={post.userId === currentUserId}
             deletePost={() => handleDeletePost(post.id)}
-            // openEditDialog={handleOpenEditDialog}
             post={post}
           />
         ))}
