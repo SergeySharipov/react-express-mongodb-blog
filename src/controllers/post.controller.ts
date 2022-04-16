@@ -4,7 +4,7 @@ import Post from '../models/post'
 
 const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const posts: IPost[] = await Post.find({}).sort({ updatedAt: -1, createdAt: -1 })
+    const posts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
     res.status(200).json({ posts })
   } catch (error) {
     res.status(500).json({
@@ -15,7 +15,7 @@ const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
 
 const getUserPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const posts: IPost[] = await Post.find({ userId: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
+    const posts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
     res.status(200).json({ posts })
   } catch (error) {
     res.status(500).json({
