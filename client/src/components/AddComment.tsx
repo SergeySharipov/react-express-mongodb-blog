@@ -42,7 +42,6 @@ const AddComment: React.FC<Props> = ({ postId, saveComment }) => {
   return (
     <form className='Form' onSubmit={handleSubmit}>
       <div>
-        <label htmlFor='content'>Content</label>
         <input onChange={handleForm} value={formData.content} type='text' id='content' />
       </div>
       <button disabled={formData === undefined ? true : false} >Add Comment</button>

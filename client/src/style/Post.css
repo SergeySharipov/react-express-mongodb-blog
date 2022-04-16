@@ -1,0 +1,27 @@
+.post_item-card{
+  display: flex;
+  flex-direction: column;
+  background: rgb(239, 239, 239);
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 0.4rem 1rem;
+}
+
+.post_item-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.post_item-likes{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post_item-likes text{
+  font-size: 25px;
+  margin: 5px;
+}

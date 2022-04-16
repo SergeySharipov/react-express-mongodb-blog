@@ -10,6 +10,7 @@ export interface IComment {
   userId: string
   username: string
   content: string
+  date: number
 }
 
 export interface ILike {

@@ -86,12 +86,13 @@ const Home: React.FC<Props> = ({ history }) => {
       const comment: IComment = {
         userId: currentUserId,
         username: currentUserUsername,
+        date: Date.now(),
         content: commentContent
       }
       commentPost(postId, comment)
         .then(({ status, data }) => {
           if (status !== 200) {
-            throw new Error('Error! Post not liked')
+            throw new Error('Error! Post not commented')
           }
           setPosts(data.usersPosts)
         })
@@ -138,7 +139,7 @@ const Home: React.FC<Props> = ({ history }) => {
         {posts.map((post: IPost) => (
           <PostItem
             key={post.id}
-            isUserOwner={post.userId === currentUserId}
+            currentUserId={currentUserId}
             deletePost={() => handleDeletePost(post.id)}
             likePost={() => handleLikePost(post)}
             saveComment={handleCommentPost}

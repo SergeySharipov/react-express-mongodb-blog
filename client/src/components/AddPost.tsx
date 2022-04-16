@@ -38,7 +38,6 @@ const AddPost: React.FC<Props> = ({ savePost }) => {
   return (
     <form className='Form' onSubmit={handleSubmit}>
       <div>
-        <label htmlFor='content'>Content</label>
         <input onChange={handleForm} value={formData.content} type='text' id='content' />
       </div>
       <button disabled={formData === undefined ? true : false} >Add Post</button>

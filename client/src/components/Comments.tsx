@@ -8,9 +8,10 @@ const Comments: React.FC<Props> = ({ comments }) => {
   return (
     <div className="Card">
       <div className="Card--text">
+      <h5>Comments:</h5>
         {comments.map((comment: IComment) => (
-          <div>
-            <h5>{comment.username}</h5>
+          <div key={comment.date}>
+            <h6>{comment.username}</h6>
             <h2>{comment.content}</h2>
           </div>
         ))}

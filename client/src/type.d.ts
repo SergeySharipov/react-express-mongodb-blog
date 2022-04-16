@@ -1,4 +1,5 @@
 interface IComment {
+  date: int
   userId: string
   username: string
   content: string

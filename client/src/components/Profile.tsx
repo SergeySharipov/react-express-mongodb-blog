@@ -82,17 +82,19 @@ const Profile: React.FC<Props> = ({ history }) => {
     }
   }
 
+
   const handleCommentPost = (postId: string, commentContent: string): void => {
     if (currentUserId && currentUserUsername) {
       const comment: IComment = {
         userId: currentUserId,
         username: currentUserUsername,
+        date: Date.now(),
         content: commentContent
       }
       commentPost(postId, comment)
         .then(({ status, data }) => {
           if (status !== 200) {
-            throw new Error('Error! Post not liked')
+            throw new Error('Error! Post not commented')
           }
           setPosts(data.usersPosts)
         })
@@ -105,10 +107,10 @@ const Profile: React.FC<Props> = ({ history }) => {
       <div className='postApp'>
         <h1>My Posts</h1>
         <AddPost savePost={handleSavePost} />
-        {posts.map((post: IPost) => (
+        {currentUserId &&posts.map((post: IPost) => (
           <PostItem
             key={post.id}
-            isUserOwner={true}
+            currentUserId={currentUserId}
             deletePost={() => handleDeletePost(post.id)}
             likePost={() => handleLikePost(post)}
             saveComment={handleCommentPost}
