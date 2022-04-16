@@ -8,6 +8,7 @@ export interface IUser extends Document {
 
 export interface IComment {
   userId: string
+  username: string
   content: string
 }
 

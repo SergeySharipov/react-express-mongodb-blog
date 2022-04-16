@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentUser } from "../services/auth.service";
 import { RouteComponentProps } from "react-router-dom";
-import { getUserPosts, addPost, deletePost, likePost } from '../services/post.service'
+import { getUserPosts, addPost, deletePost, likePost, commentPost } from '../services/post.service'
 import AddPost from './AddPost';
-import PostItem from './PostItem'
+import PostItem from './Post'
 
 interface RouterProps {
   history: string;
@@ -14,11 +14,13 @@ type Props = RouteComponentProps<RouterProps>;
 const Profile: React.FC<Props> = ({ history }) => {
   const [posts, setPosts] = useState<IPost[]>([])
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [currentUserUsername, setCurrentUserUsername] = useState(null);
 
   useEffect(() => {
     const user = getCurrentUser()
     if (user) {
       setCurrentUserId(user.id)
+      setCurrentUserUsername(user.usename)
     } else {
       history.push("/login");
       window.location.reload();
@@ -80,6 +82,24 @@ const Profile: React.FC<Props> = ({ history }) => {
     }
   }
 
+  const handleCommentPost = (postId: string, commentContent: string): void => {
+    if (currentUserId && currentUserUsername) {
+      const comment: IComment = {
+        userId: currentUserId,
+        username: currentUserUsername,
+        content: commentContent
+      }
+      commentPost(postId, comment)
+        .then(({ status, data }) => {
+          if (status !== 200) {
+            throw new Error('Error! Post not liked')
+          }
+          setPosts(data.usersPosts)
+        })
+        .catch((err) => console.log(err))
+    }
+  }
+
   return (
     <div className="container">
       <div className='postApp'>
@@ -91,6 +111,7 @@ const Profile: React.FC<Props> = ({ history }) => {
             isUserOwner={true}
             deletePost={() => handleDeletePost(post.id)}
             likePost={() => handleLikePost(post)}
+            saveComment={handleCommentPost}
             post={post}
           />
         ))}

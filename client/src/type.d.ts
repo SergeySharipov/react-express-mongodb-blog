@@ -1,5 +1,6 @@
 interface IComment {
   userId: string
+  username: string
   content: string
 }
 
@@ -18,6 +19,10 @@ interface IPost {
 }
 
 interface AddPostFormData {
+  content: string
+}
+
+interface AddCommentFormData {
   content: string
 }
 

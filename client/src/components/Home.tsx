@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import PostItem from './PostItem'
-import { getUsersPosts, addPost, deletePost, likePost } from '../services/post.service'
+import PostItem from './Post'
+import { getUsersPosts, addPost, deletePost, likePost, commentPost } from '../services/post.service'
 import AddPost from './AddPost'
 import { getCurrentUser } from "../services/auth.service";
 import { Link } from 'react-router-dom'
@@ -16,10 +16,12 @@ type Props = RouteComponentProps<RouterProps>;
 const Home: React.FC<Props> = ({ history }) => {
   const [posts, setPosts] = useState<IPost[]>([])
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [currentUserUsername, setCurrentUserUsername] = useState(null);
 
   useEffect(() => {
     const user = getCurrentUser()
     if (user) {
+      setCurrentUserUsername(user.username)
       setCurrentUserId(user.id)
     }
   }, [])
@@ -79,6 +81,24 @@ const Home: React.FC<Props> = ({ history }) => {
     }
   }
 
+  const handleCommentPost = (postId: string, commentContent: string): void => {
+    if (currentUserId && currentUserUsername) {
+      const comment: IComment = {
+        userId: currentUserId,
+        username: currentUserUsername,
+        content: commentContent
+      }
+      commentPost(postId, comment)
+        .then(({ status, data }) => {
+          if (status !== 200) {
+            throw new Error('Error! Post not liked')
+          }
+          setPosts(data.usersPosts)
+        })
+        .catch((err) => console.log(err))
+    }
+  }
+
   const demoLogin = async () => {
     const dateStr = Date.now();
     const username = `Test${dateStr}`;
@@ -121,6 +141,7 @@ const Home: React.FC<Props> = ({ history }) => {
             isUserOwner={post.userId === currentUserId}
             deletePost={() => handleDeletePost(post.id)}
             likePost={() => handleLikePost(post)}
+            saveComment={handleCommentPost}
             post={post}
           />
         ))}
