@@ -39,7 +39,7 @@ const addPost = async (req: Request, res: Response): Promise<void> => {
 
     const userPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
     const usersPosts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
-    res.status(200).json({
+    res.status(201).json({
       message: 'Post added',
       post: newPost,
       userPosts: userPosts,
