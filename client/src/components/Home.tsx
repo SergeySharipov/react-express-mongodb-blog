@@ -126,7 +126,7 @@ const Home: React.FC<Props> = ({ history }) => {
     const password = `${dateStr}`;
 
     await register(username, email, password);
-    await login(username, password);
+    await login(email, password);
 
     history.push("/");
     window.location.reload();
