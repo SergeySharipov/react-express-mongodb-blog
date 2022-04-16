@@ -96,7 +96,7 @@ const likePost = async (req: Request, res: Response): Promise<void> => {
     })
     if (post) {
       if (isLike) {
-        if (post.likes.find(like => like.userId === req.userId)) {
+        if (!post.likes.find(like => like.userId === req.userId)) {
           post.likes = post.likes ? [...post.likes, like] : [like]
         }
       } else {
