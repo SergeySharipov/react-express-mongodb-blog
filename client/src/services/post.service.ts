@@ -77,6 +77,38 @@ export const updatePost = async (
   }
 }
 
+export const likePost = async (
+  postId: string,
+  isLike: boolean
+): Promise<AxiosResponse<ApiDataType>> => {
+  try {
+    const updatedPost: AxiosResponse<ApiDataType> = await axios.put(
+      `${API_URL}/api/post/${postId}/like`,
+      { isLike: isLike }
+      , { headers: authHeader() });
+    return updatedPost
+  } catch (e) {
+    catchUnauthorizedError(e)
+    throw e
+  }
+}
+
+export const commentPost = async (
+  postId: string,
+  comment: IComment
+): Promise<AxiosResponse<ApiDataType>> => {
+  try {
+    const updatedPost: AxiosResponse<ApiDataType> = await axios.put(
+      `${API_URL}/api/post/${postId}/comment`,
+      comment
+      , { headers: authHeader() });
+    return updatedPost
+  } catch (e) {
+    catchUnauthorizedError(e)
+    throw e
+  }
+}
+
 export const deletePost = async (
   currentUserId: string,
   postId: string

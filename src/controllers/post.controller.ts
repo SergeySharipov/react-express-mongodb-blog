@@ -1,5 +1,5 @@
 import { Response, Request } from 'express'
-import { IPost } from '../types/types'
+import { IComment, ILike, IPost } from '../types/types'
 import Post from '../models/post'
 
 const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
@@ -36,12 +36,14 @@ const addPost = async (req: Request, res: Response): Promise<void> => {
     })
 
     const newPost: IPost = await post.save()
-    const allPosts: IPost[] = await Post.find({ creator: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
 
-    res.status(201).json({
+    const userPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
+    const usersPosts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
+    res.status(200).json({
       message: 'Post added',
       post: newPost,
-      posts: allPosts
+      userPosts: userPosts,
+      usersPosts: usersPosts
     })
   } catch (error) {
     res.status(500).json({
@@ -65,12 +67,101 @@ const updatePost = async (req: Request, res: Response): Promise<void> => {
       },
       post
     )
-    const allPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
+    const userPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
+    const usersPosts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
     res.status(200).json({
       message: 'Post updated',
       post: updatePost,
-      posts: allPosts
+      userPosts: userPosts,
+      usersPosts: usersPosts
     })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error: ' + error
+    })
+  }
+}
+
+const likePost = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      params: { postId },
+      body
+    } = req
+
+    const isLike = body.isLike
+    const like: ILike = { userId: req.userId }
+    const post = await Post.findById({
+      _id: postId
+    })
+    if (post) {
+      if (isLike) {
+        if (post.likes.find(like => like.userId === req.userId)) {
+          post.likes = post.likes ? [...post.likes, like] : [like]
+        }
+      } else {
+        post.likes = post.likes?.filter(like => like.userId !== req.userId)
+      }
+
+      const updatePost: IPost | null = await Post.findByIdAndUpdate(
+        {
+          _id: postId
+        },
+        post
+      )
+      const userPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
+      const usersPosts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
+      res.status(200).json({
+        message: 'Post liked',
+        post: updatePost,
+        userPosts: userPosts,
+        usersPosts: usersPosts
+      })
+    } else {
+      res.status(500).json({
+        message: 'Error: Post not found'
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error: ' + error
+    })
+  }
+}
+
+const commentPost = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      params: { postId },
+      body
+    } = req
+
+    const comment = body as IComment
+    const post = await Post.findById({
+      _id: postId
+    })
+    if (post) {
+      post.comments = post.comments ? [...post.comments, comment] : [comment]
+
+      const updatePost: IPost | null = await Post.findByIdAndUpdate(
+        {
+          _id: postId
+        },
+        post
+      )
+      const userPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
+      const usersPosts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
+      res.status(200).json({
+        message: 'Post commented',
+        post: updatePost,
+        userPosts: userPosts,
+        usersPosts: usersPosts
+      })
+    } else {
+      res.status(500).json({
+        message: 'Error: Post not found'
+      })
+    }
   } catch (error) {
     res.status(500).json({
       message: 'Error: ' + error
@@ -82,11 +173,13 @@ const deletePost = async (req: Request, res: Response): Promise<void> => {
   try {
     const deletedPost: IPost | null = await Post.findByIdAndRemove(req.params.postId)
 
-    const allPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ updatedAt: -1, createdAt: -1 })
+    const userPosts: IPost[] = await Post.find({ userId: req.userId }).sort({ createdAt: -1 })
+    const usersPosts: IPost[] = await Post.find({}).sort({ createdAt: -1 })
     res.status(200).json({
       message: 'Post deleted',
       post: deletedPost,
-      posts: allPosts
+      userPosts: userPosts,
+      usersPosts: usersPosts
     })
   } catch (error) {
     res.status(500).json({
@@ -95,4 +188,4 @@ const deletePost = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export { getUsersPosts, getUserPosts, addPost, updatePost, deletePost }
+export { getUsersPosts, getUserPosts, addPost, updatePost, likePost, commentPost, deletePost }

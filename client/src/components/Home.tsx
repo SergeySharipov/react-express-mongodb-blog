@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PostItem from './PostItem'
-import { getUsersPosts, addPost, deletePost } from '../services/post.service'
+import { getUsersPosts, addPost, deletePost, likePost } from '../services/post.service'
 import AddPost from './AddPost'
 import { getCurrentUser } from "../services/auth.service";
 import { Link } from 'react-router-dom'
@@ -45,7 +45,7 @@ const Home: React.FC<Props> = ({ history }) => {
             if (status !== 201) {
               throw new Error('Error! Post not saved')
             }
-            setPosts(data.posts)
+            setPosts(data.usersPosts)
           })
           .catch((err) => console.log(err))
       }
@@ -58,7 +58,22 @@ const Home: React.FC<Props> = ({ history }) => {
           if (status !== 200) {
             throw new Error('Error! Post not deleted')
           }
-          setPosts(data.posts)
+          setPosts(data.usersPosts)
+        })
+        .catch((err) => console.log(err))
+    }
+  }
+
+  const handleLikePost = (post: IPost): void => {
+    if (currentUserId) {
+      let like = post.likes?.find(like => like.userId === currentUserId)
+
+      likePost(post.id, like === undefined)
+        .then(({ status, data }) => {
+          if (status !== 200) {
+            throw new Error('Error! Post not liked')
+          }
+          setPosts(data.usersPosts)
         })
         .catch((err) => console.log(err))
     }
@@ -105,6 +120,7 @@ const Home: React.FC<Props> = ({ history }) => {
             key={post.id}
             isUserOwner={post.userId === currentUserId}
             deletePost={() => handleDeletePost(post.id)}
+            likePost={() => handleLikePost(post)}
             post={post}
           />
         ))}

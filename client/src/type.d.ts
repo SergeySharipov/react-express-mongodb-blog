@@ -28,6 +28,7 @@ interface PostProps {
 type ApiDataType = {
   message: string
   status: string
-  posts: IPost[]
+  userPosts: IPost[]
+  usersPosts: IPost[]
   post?: IPost
 }

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from 'express'
 
 import { authJwt } from '../middlewares'
-import { getUsersPosts, getUserPosts, addPost, updatePost, deletePost } from '../controllers/post.controller'
+import { getUsersPosts, getUserPosts, addPost, likePost, commentPost, updatePost, deletePost } from '../controllers/post.controller'
 
 const router: Router = Router()
 
@@ -20,6 +20,10 @@ router.get('/', [authJwt.verifyToken], getUserPosts)
 router.post('/', [authJwt.verifyToken], addPost)
 
 router.put('/:postId', [authJwt.verifyToken], updatePost)
+
+router.put('/:postId/like', [authJwt.verifyToken], likePost)
+
+router.put('/:postId/comment', [authJwt.verifyToken], commentPost)
 
 router.delete('/:postId', [authJwt.verifyToken], deletePost)
 
