@@ -2,11 +2,11 @@ import React from "react"
 
 type Props = PostProps & {
   // updatePost: (post: IPost) => void
-  // deletePost: (id: string) => void
+  deletePost: () => void
   // openEditDialog: (id: string) => void
 }
 
-const Post: React.FC<Props> = ({ post }) => {
+const Post: React.FC<Props> = ({ post, deletePost }) => {
   return (
     <div className="Card">
       <div className="Card--text">
@@ -16,7 +16,7 @@ const Post: React.FC<Props> = ({ post }) => {
       <div className="Card--button">
         <button
           className="Card--button__delete"
-        >
+          onClick={deletePost}>
           Delete
         </button>
       </div>

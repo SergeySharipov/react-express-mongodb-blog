@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PostItem from './PostItem'
-import { getUsersPosts,getUserPosts, addPost, updatePost, deletePost } from '../services/post.service'
+import { getUsersPosts, getUserPosts, addPost, updatePost, deletePost } from '../services/post.service'
 import AddPost from './AddPost'
 /*
 import UpdatePostDialog from './UpdatePostDialog'
@@ -44,12 +44,25 @@ const Home: React.FC<Props> = ({ history }) => {
   }, [currentUserId])
 
   const handleSavePost
-  = (formData: AddPostFormData): void => {
+    = (formData: AddPostFormData): void => {
+      if (currentUserId) {
+        addPost(currentUserId, formData)
+          .then(({ status, data }) => {
+            if (status !== 201) {
+              throw new Error('Error! Post not saved')
+            }
+            setPosts(data.posts)
+          })
+          .catch((err) => console.log(err))
+      }
+    }
+
+  const handleDeletePost = (id: string): void => {
     if (currentUserId) {
-      addPost(currentUserId, formData)
+      deletePost(currentUserId, id)
         .then(({ status, data }) => {
-          if (status !== 201) {
-            throw new Error('Error! Post not saved')
+          if (status !== 200) {
+            throw new Error('Error! Post not deleted')
           }
           setPosts(data.posts)
         })
@@ -66,19 +79,6 @@ const Home: React.FC<Props> = ({ history }) => {
           .then(({ status, data }) => {
             if (status !== 200) {
               throw new Error('Error! Post not updated')
-            }
-            setPosts(data.posts)
-          })
-          .catch((err) => console.log(err))
-      }
-    }
-  
-    const handleDeletePost = (id: string): void => {
-      if (currentUserId) {
-        deletePost(currentUserId, id)
-          .then(({ status, data }) => {
-            if (status !== 200) {
-              throw new Error('Error! Post not deleted')
             }
             setPosts(data.posts)
           })
@@ -137,7 +137,7 @@ const Home: React.FC<Props> = ({ history }) => {
           <PostItem
             key={post.id}
             // updatePost={handleUpdatePost}
-            // deletePost={handleDeletePost}
+            deletePost={() => handleDeletePost(post.id)}
             // openEditDialog={handleOpenEditDialog}
             post={post}
           />
