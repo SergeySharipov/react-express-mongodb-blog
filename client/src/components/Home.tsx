@@ -6,6 +6,7 @@ import { getCurrentUser } from "../services/auth.service";
 import { Link } from 'react-router-dom'
 import { login, register } from "../services/auth.service";
 import { RouteComponentProps } from "react-router-dom";
+import SearchPost from './SearchPost';
 
 interface RouterProps {
   history: string;
@@ -15,6 +16,7 @@ type Props = RouteComponentProps<RouterProps>;
 
 const Home: React.FC<Props> = ({ history }) => {
   const [posts, setPosts] = useState<IPost[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<IPost[]>([])
   const [currentUserId, setCurrentUserId] = useState(null);
   const [currentUserUsername, setCurrentUserUsername] = useState(null);
 
@@ -38,6 +40,23 @@ const Home: React.FC<Props> = ({ history }) => {
       fetchPosts()
     }
   }, [currentUserId])
+
+  useEffect(() => {
+    setFilteredPosts(posts)
+  }, [posts])
+
+  const handleSearchPost
+    = (formData: SearchPostFormData): void => {
+      if (!isBlank(formData.content)) {
+        setFilteredPosts(posts.filter(post => post.content.includes(formData.content)))
+      } else {
+        setFilteredPosts(posts)
+      }
+    }
+
+  function isBlank(str: string) {
+    return !str || str.length === 0 || !str.trim();
+  }
 
   const handleSavePost
     = (formData: AddPostFormData): void => {
@@ -136,7 +155,8 @@ const Home: React.FC<Props> = ({ history }) => {
       {currentUserId && <div className='postApp'>
         <h1>All Posts</h1>
         <AddPost savePost={handleSavePost} />
-        {posts.map((post: IPost) => (
+        <SearchPost searchPost={handleSearchPost} />
+        {filteredPosts.map((post: IPost) => (
           <PostItem
             key={post.id}
             currentUserId={currentUserId}

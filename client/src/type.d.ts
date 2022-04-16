@@ -28,6 +28,10 @@ interface AddCommentFormData {
   content: string
 }
 
+interface SearchPostFormData {
+  content: string
+}
+
 interface PostProps {
   post: IPost
 }
