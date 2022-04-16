@@ -17,9 +17,7 @@ const catchUnauthorizedError = (e: unknown) => {
   }
 };
 
-export const getUsersPosts = async (
-  currentUserId: string
-): Promise<AxiosResponse<ApiDataType>> => {
+export const getUsersPosts = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
     const posts: AxiosResponse<ApiDataType> = await axios.get(
       `${API_URL}/api/post/all`, { headers: authHeader() });

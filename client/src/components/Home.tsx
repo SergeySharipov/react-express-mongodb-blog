@@ -33,7 +33,7 @@ const Home: React.FC<Props> = ({ history }) => {
   useEffect(() => {
     function fetchPosts() {
       if (currentUserId) {
-        getUsersPosts(currentUserId)
+        getUsersPosts()
           .then(({ data: { posts } }: IPost[] | any) => setPosts(posts))
           .catch((err: Error) => console.log(err))
       }
@@ -131,7 +131,7 @@ const Home: React.FC<Props> = ({ history }) => {
         </div>
       </div>}
       {currentUserId && <div className='postApp'>
-        <h1>My Posts</h1>
+        <h1>All Posts</h1>
         <AddPost savePost={handleSavePost} />
         {posts.map((post: IPost) => (
           <PostItem
