@@ -41,8 +41,8 @@ const Home: React.FC<Props> = ({ history }) => {
 
   const handleSavePost
     = (formData: AddPostFormData): void => {
-      if (currentUserId) {
-        addPost(currentUserId, formData)
+      if (currentUserId && currentUserUsername) {
+        addPost(currentUserId, currentUserUsername, formData)
           .then(({ status, data }) => {
             if (status !== 201) {
               throw new Error('Error! Post not saved')

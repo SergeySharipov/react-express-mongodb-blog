@@ -32,6 +32,7 @@ const addPost = async (req: Request, res: Response): Promise<void> => {
       content: body.content,
       likes: body.likes,
       comments: body.comments,
+      username: body.username,
       userId: body.userId
     })
 

@@ -19,6 +19,7 @@ export interface ILike {
 
 export interface IPost extends Document {
   id: string
+  username: string
   userId: string
   content: string
   likes: Array<ILike>

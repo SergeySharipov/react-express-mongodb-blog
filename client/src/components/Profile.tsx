@@ -20,7 +20,7 @@ const Profile: React.FC<Props> = ({ history }) => {
     const user = getCurrentUser()
     if (user) {
       setCurrentUserId(user.id)
-      setCurrentUserUsername(user.usename)
+      setCurrentUserUsername(user.username)
     } else {
       history.push("/login");
       window.location.reload();
@@ -42,8 +42,8 @@ const Profile: React.FC<Props> = ({ history }) => {
 
   const handleSavePost
     = (formData: AddPostFormData): void => {
-      if (currentUserId) {
-        addPost(currentUserId, formData)
+      if (currentUserId && currentUserUsername) {
+        addPost(currentUserId, currentUserUsername, formData)
           .then(({ status, data }) => {
             if (status !== 201) {
               throw new Error('Error! Post not saved')
@@ -96,7 +96,7 @@ const Profile: React.FC<Props> = ({ history }) => {
           if (status !== 200) {
             throw new Error('Error! Post not commented')
           }
-          setPosts(data.usersPosts)
+          setPosts(data.userPosts)
         })
         .catch((err) => console.log(err))
     }
@@ -107,7 +107,7 @@ const Profile: React.FC<Props> = ({ history }) => {
       <div className='postApp'>
         <h1>My Posts</h1>
         <AddPost savePost={handleSavePost} />
-        {currentUserId &&posts.map((post: IPost) => (
+        {currentUserId && posts.map((post: IPost) => (
           <PostItem
             key={post.id}
             currentUserId={currentUserId}

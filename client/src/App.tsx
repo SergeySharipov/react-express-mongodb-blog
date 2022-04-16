@@ -38,7 +38,7 @@ const App: React.FC = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          ToDo
+          Blog
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">

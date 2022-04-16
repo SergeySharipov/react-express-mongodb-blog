@@ -13,6 +13,11 @@ const postSchema: Schema = new Schema(
       required: true,
       ref: 'user'
     },
+    username: {
+      type: String,
+      required: true,
+      minlength: 1
+    },
     likes: {
       type: Array
     },

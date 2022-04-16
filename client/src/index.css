@@ -30,7 +30,7 @@ body {
 .Card {
     display: flex;
     align-items: center;
-    background: #444;
+    background: rgb(232, 232, 232);
     margin-bottom: 10px;
     border-radius: 10px;
     padding: 0.4rem 1rem;

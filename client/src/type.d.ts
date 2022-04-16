@@ -12,6 +12,7 @@ interface ILike {
 interface IPost {
   id: string
   userId: string
+  username: string
   content: string
   likes?: Array<ILike>
   comments?: Array<IComment>

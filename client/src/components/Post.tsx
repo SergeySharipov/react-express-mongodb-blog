@@ -16,14 +16,17 @@ type Props = PostProps & {
 }
 
 const Post: React.FC<Props> = ({ post, deletePost, likePost, saveComment, currentUserId }) => {
+  console.log(post.username);
+
   return (
     <div className="post_item-card">
       <div className="post_item-text">
+        <h5>{post.username}</h5>
         <h2>{post.content}</h2>
       </div>
       <div className='post_item-row'>
         <div className='post_item-likes'>
-          <text>{post.likes?.length}</text>
+          <div className='post_item-likes_n'>{post.likes?.length}</div>
           {post.likes?.find(like => like.userId === currentUserId)
             ? <img src={icHeartFill} alt='disLike' onClick={likePost} height="25" />
             : <img src={icHeart} alt='like' onClick={likePost} height="25" />

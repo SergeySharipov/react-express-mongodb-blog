@@ -43,12 +43,14 @@ export const getUserPosts = async (
 
 export const addPost = async (
   currentUserId: string,
+  currentUserUsername: string,
   formData: AddPostFormData
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
     const post: Omit<IPost, "id"> = {
       content: formData.content,
-      userId: currentUserId
+      userId: currentUserId,
+      username: currentUserUsername
     }
     const savePost: AxiosResponse<ApiDataType> = await axios.post(
       `${API_URL}/api/post`,
