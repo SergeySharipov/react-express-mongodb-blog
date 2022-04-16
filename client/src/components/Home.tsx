@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import PostItem from './PostItem'
 import { getUsersPosts,getUserPosts, addPost, updatePost, deletePost } from '../services/post.service'
-/*
 import AddPost from './AddPost'
+/*
 import UpdatePostDialog from './UpdatePostDialog'
 */
 import { getCurrentUser } from "../services/auth.service";
@@ -42,20 +42,22 @@ const Home: React.FC<Props> = ({ history }) => {
       fetchPosts()
     }
   }, [currentUserId])
+
+  const handleSavePost
+  = (formData: AddPostFormData): void => {
+    if (currentUserId) {
+      addPost(currentUserId, formData)
+        .then(({ status, data }) => {
+          if (status !== 201) {
+            throw new Error('Error! Post not saved')
+          }
+          setPosts(data.posts)
+        })
+        .catch((err) => console.log(err))
+    }
+  }
   /*
-    const handleSavePost
-      = (formData: AddPostFormData): void => {
-        if (currentUserId) {
-          addPost(currentUserId, formData)
-            .then(({ status, data }) => {
-              if (status !== 201) {
-                throw new Error('Error! Post not saved')
-              }
-              setPosts(data.posts)
-            })
-            .catch((err) => console.log(err))
-        }
-      }
+  
   
     const handleUpdatePost = (post: IPost): void => {
       cancelEditDialog()
@@ -130,7 +132,7 @@ const Home: React.FC<Props> = ({ history }) => {
       </div>}
       {currentUserId && <div className='postApp'>
         <h1>My Posts</h1>
-        {/* <AddPost savePost={handleSavePost} /> */}
+        <AddPost savePost={handleSavePost} />
         {posts.map((post: IPost) => (
           <PostItem
             key={post.id}
