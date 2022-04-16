@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PostItem from './PostItem'
-import { getUsersPosts, getUserPosts, addPost, updatePost, deletePost } from '../services/post.service'
+import { getUsersPosts, addPost, deletePost } from '../services/post.service'
 import AddPost from './AddPost'
-/*
-import UpdatePostDialog from './UpdatePostDialog'
-*/
 import { getCurrentUser } from "../services/auth.service";
 import { Link } from 'react-router-dom'
 import { login, register } from "../services/auth.service";
@@ -17,9 +14,6 @@ interface RouterProps {
 type Props = RouteComponentProps<RouterProps>;
 
 const Home: React.FC<Props> = ({ history }) => {
-  /*
-  const [editPostId, setEditPostId] = useState("");
-  */
   const [posts, setPosts] = useState<IPost[]>([])
   const [currentUserId, setCurrentUserId] = useState(null);
 
@@ -69,33 +63,6 @@ const Home: React.FC<Props> = ({ history }) => {
         .catch((err) => console.log(err))
     }
   }
-  /*
-  
-  
-    const handleUpdatePost = (post: IPost): void => {
-      cancelEditDialog()
-      if (currentUserId) {
-        updatePost(currentUserId, post)
-          .then(({ status, data }) => {
-            if (status !== 200) {
-              throw new Error('Error! Post not updated')
-            }
-            setPosts(data.posts)
-          })
-          .catch((err) => console.log(err))
-      }
-    }
-  
-    function handleOpenEditDialog(id: string) {
-      setEditPostId(id);
-    }
-  
-    function cancelEditDialog() {
-      if (editPostId !== "") {
-        setEditPostId("")
-      }
-    }
-    */
 
   const demoLogin = async () => {
     const dateStr = Date.now();
@@ -141,15 +108,6 @@ const Home: React.FC<Props> = ({ history }) => {
             post={post}
           />
         ))}
-        {/* <UpdatePostDialog
-          post={
-            editPostId !== ""
-              ? posts.find(post => post.id === editPostId)
-              : undefined
-          }
-          updatePost={handleUpdatePost}
-          cancelEditDialog={cancelEditDialog}
-        /> */}
       </div>}
     </div>
   )
